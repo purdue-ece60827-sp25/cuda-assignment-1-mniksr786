@@ -59,6 +59,7 @@ void saxpy_cpu(float* x, float* y, float scale, uint64_t size) {
 int runCpuSaxpy(uint64_t vectorSize) {
 	uint64_t vectorBytes = vectorSize * sizeof(float);
 
+    
 	printf("Hello Saxpy!\n");
 
 	float * a, * b, * c;
@@ -71,6 +72,8 @@ int runCpuSaxpy(uint64_t vectorSize) {
 		printf("Unable to malloc memory ... Exiting!");
 		return -1;
 	}
+
+	auto tStart = std::chrono::high_resolution_clock::now();
 
 	vectorInit(a, vectorSize);
 	vectorInit(b, vectorSize);
@@ -106,6 +109,12 @@ int runCpuSaxpy(uint64_t vectorSize) {
 
 	int errorCount = verifyVector(a, b, c, scale, vectorSize);
 	std::cout << "Found " << errorCount << " / " << vectorSize << " errors \n";
+
+	auto tEnd= std::chrono::high_resolution_clock::now();
+
+	std::chrono::duration<double> time_span = (tEnd- tStart);
+	std::cout << "It took " << time_span.count() << " seconds.";
+
 
 	return 0;
 }
